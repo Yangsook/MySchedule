@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1><a href="/person/">{{ person.name }}</a></h1>
+        <p>{{ person.birthday }}</p>
+        <p>{{ person.nickname }}</p>
+        <p>{{ person.history }}</p>
+        <p>{{ person.memo }}</p>
+        <hr/>
+    </div>
+
+{% endblock  %}
+

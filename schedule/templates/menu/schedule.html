@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load custom_filters %}  <!-- custom_filters 태그 라이브러리를 로드합니다 -->
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">Schedule Manager</h2>
+
+        <table class="table" style="width: 100%;">
+        <tr>
+            <td width="70%">
+                <table class="table table-bordered table-hover" style="width: 99%;">
+                <thead class="table-warning" >
+                    <tr align="center"  class="align-middle">
+                        <th scope="col">Title</th>
+                        <th scope="col">Day</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Volunteer<br>hours</th>
+                        <th scope="col">Bigevent</th>
+                        <th scope="col">Memo</th>
+                        <th scope="col">
+                            <a class="btn btn-outline-warning mini" href="{% url 'schedule_add' %}"> new </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in datalist %}
+                    <tr>
+                        <td><p class="fw-lighter lh-1"><a href="{{ d.get_data_url }}">{{ d.title }}</a></p></td>
+                        <td> {{ d.day|get_dayofweek_kor|default:"" }}</td>
+                        <td> {{ d.dateday|date:"Y-m-d"}}</td>
+                        <td> {{ d.datetime }}</td>
+                        <td> {{ d.duration }}</td>
+                        <td> {{ d.price }}</td>
+                        <td> {{ d.volunteerhours }}</td>
+                        <td> {{ d.bigevent }}</td>
+                        <td> {{ d.memo }}</td>
+                        <td>
+                            <a class="btn btn-outline-warning mini" href="{% url 'schedule_edit' pk=d.id  %}"> 수정 </a>
+                            <a class="btn btn-outline-warning mini" href="{% url 'schedule_delete' pk=d.id  %}" onclick="return confirm('정말로 삭제하시겠습니까?')"> 삭제 </a>
+                            {% comment %} <a class="btn btn-outline-warning mini" href="{% url 'schedule_delete' pk=d.id  %}"> 삭제 </a> {% endcomment %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </td>
+
+            <td>
+                <table class="table table-bordered" style="width: 100%;">
+                    <thead>
+                        <tr align="center">
+                            <th style="background-color:#F5DA81">입력 및 수정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color:#F5ECCE">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ form.as_table }}
+                                    </table>
+                                    <br>
+                                    <center><button type="submit" class="btn btn-warning btn-rounded">저장하기</button></center>
+
+                                </form>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                    </table>
+            </td>
+
+        </tr>
+        </table>
+
+
+    </div>
+
+{% endblock  %}
+

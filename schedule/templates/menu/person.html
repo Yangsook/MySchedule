@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">Person Manager</h2>
+
+        <table class="table" style="width: 100%;">
+        <tr>
+            <td width="70%">
+                <table class="table table-bordered table-hover" style="width: 99%;">
+                <thead class="table-warning" >
+                    <tr align="center"  class="align-middle">
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Nickname</th>
+                        <th scope="col">Birthady</th>
+                        <th scope="col">Memo</th>
+                        <th scope="col">History</th>
+                        <th scope="col" width="140"><a class="btn btn-outline-warning mini" href="{% url 'person_add' %}"> new </a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in datalist %}
+                    <tr>
+                        <td> {{ d.id }}</td>
+                        <td><p class="fw-lighter lh-1"><a href="{{ d.get_absolute_url }}">{{ d.name }}</a></p></td>
+                        <td> {{ d.nickname }}</td>
+                        <td> {{ d.birthday }}</td>
+                        <td> {{ d.memo }}</td>
+                        <td> {{ d.history }}</td>
+                        <td>
+                            <a class="btn btn-outline-warning mini" href="{% url 'person_edit' pk=d.id  %}"> 수정 </a>
+
+                            {% if not d.get_event_cnt %}
+                            {% comment %} <a class="btn btn-outline-warning mini" onclick="alert('이미 생성된 이벤트 데이터가 있어서 삭제할 수 없습니다.')"> 삭제 </a>
+                            {% else %} {% endcomment %}
+                            <a class="btn btn-outline-warning mini" href="{% url 'person_delete' pk=d.id  %}" onclick="return confirm('정말로 삭제하시겠습니까?')"> 삭제 </a>
+                            {% endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </td>
+            <td>
+                <table class="table table-bordered" style="width: 100%;">
+                    <thead>
+                        <tr align="center">
+                            <th style="background-color:#F5DA81">입력 및 수정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color:#F5ECCE" width="100%">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ form.as_table }}
+                                    </table>
+                                    <Br>
+                                    <center><button type="submit" class="btn btn-warning btn-rounded">저장하기</button></center>
+                                </form>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                    </table>
+            </td>
+        </tr>
+        </table>
+
+
+    </div>
+
+{% endblock  %}
+

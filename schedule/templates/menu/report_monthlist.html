@@ -1,0 +1,71 @@
+{% extends 'base_nonavbar.html' %}
+{% load custom_filters %}  <!-- custom_filters 태그 라이브러리를 로드합니다 -->
+
+{% block content %}
+    <div id="content-main"  align="center">
+        <h2 class="page-title"  style="padding:10px">
+            {{ datalist.0.title }}
+            {% if datalist.0.dateday %}
+                <font color="#B7B7B9">{{ datalist.0.dateday|date:"Y년 m월" }}</font>
+            {% endif %}
+
+        </h2>
+
+        <table class="table" style="width: 100%;">
+        <tr>
+            <td>
+                <table class="table table-bordered table-hover">
+                <thead class="table-warning" >
+                    <tr align="center"  class="align-middle">
+                        <th scope="col">Title</th>
+                        <th scope="col">Day</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Volunteer<br>hours</th>
+                        <th scope="col">Bigevent</th>
+                        <th scope="col">Memo</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in datalist %}
+                    <tr  align="center">
+                        <td> {{ d.title }}</td>
+                        <td> {{ d.day|get_dayofweek_kor|default:"" }}</td>
+                        <td> {{ d.dateday|date:"Y-m-d"}}</td>
+                        <td> {{ d.datetime }}</td>
+                        <td> {{ d.duration }}</td>
+                        <td> {{ d.price }}</td>
+                        <td> {{ d.volunteerhours }}</td>
+                        <td> {% if d.bigevent %} &#10004; {% endif %}</td>
+                        <td> {{ d.memo }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                    <tr  align="center" class="falsecolor">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td> <b>{{ total_duration }}</b></td>
+                        <td> <b>{{ total_price }}</b></td>
+                        <td> <b>{{ total_volunteerhours }}</b></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                </table>
+            </td>
+
+
+        </tr>
+        </table>
+
+
+    </div>
+
+{% endblock  %}
+

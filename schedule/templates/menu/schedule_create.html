@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">My Schedule - {{ caldate }} </h2>
+        <br>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+              <div class="card">
+                <h6 class="card-header card-title"><b>스케줄 등록</b></h6>
+                <div class="card-body">
+                  <p class="card-text">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <table>
+                            {{ form.as_table }}
+                        </table>
+                        <Br>
+                        <button type="submit" class="btn btn-success medium">저장하기</button>
+                    </form>
+
+                    <script>
+                        var date = document.getElementById('{{ form.date.id_for_label }}')
+                        date.value = '{{ caldate }}';
+                    </script>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                  <h5 class="card-header card-title">{{ caldate }}</h5>
+                  <div class="card-body">
+                      <p class="card-text"></p>
+                      <ul>
+                          {% for schedule in daylist %}
+                              <li>{{ schedule.title }}  <a class="btn btn-outline-warning mini" href="{% url 'schedule_delete' pk=schedule.id  %}"> 삭제 </a></li>
+                          {% endfor %}
+                      </ul>
+
+                  </div>
+                </div>
+              </div>
+
+        </div>
+
+
+    </div>
+
+{% endblock  %}
+

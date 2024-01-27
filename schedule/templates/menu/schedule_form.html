@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% comment %} {% block blockbots %}
+{{ form.media }}
+
+<link rel="stylesheet" type="text/css" href="/admin/css/forms.css"/>
+<link rel="stylesheet" type="text/css" href="/admin/css/widgets.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/admin/js/core.js"></script>
+<script type="text/javascript" src="/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/admin/js/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/admin/js/actions.min.js"></script>
+<script type="text/javascript" src="/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/admin/js/admin/DateTimeShortcuts.js"></script>
+
+{% endblock blockbots %} {% endcomment %}
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">My Schedule : {{ caldate.caldate }} </h2>
+        <br>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+              <div class="card">
+                <h5 class="card-header card-title"><b>스케줄 수정 :  {{ form.title }} </b></h5>
+                <div class="card-body">
+                  <p class="card-text">
+                    {% comment %} <form action="{% url 'schedule_update' %}" method="POST" enctype="multipart/form-data"> {% endcomment %}
+                        <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <table>
+                            {{ form.as_table }}
+                            {% comment %} <tr>
+                                <td>이벤트선택</td>
+                                <td>{{ form.eventid }} </td>
+                            </tr>
+                            <tr>
+                                <td>사람선택</td>
+                                <td>{{ form.personid }}</td>
+                            </tr>
+                            <tr>
+                                <td>Title</td>
+                                <td>{{ form.title }}</td>
+                            </tr>
+                            <tr>
+                                <td>Day</td>
+                                <td>{{ form.day }}</td>
+                            </tr>
+                            <tr>
+                                <td>Dateday</td>
+                                <td>{{ form.dateday }}</td>
+                            </tr>
+                            <tr>
+                                <td>Datetime</td>
+                                <td>{{ form.datetime }}</td>
+                            </tr>
+                            <tr>
+                                <td>Duration</td>
+                                <td>{{ form.duration }}</td>
+                            </tr>
+                            <tr>
+                                <td>Price</td>
+                                <td>{{ form.price }}</td>
+                            </tr>
+                            <tr>
+                                <td>Volunteerhours</td>
+                                <td>{{ form.volunteerhours }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bigevent</td>
+                                <td>{{ form.bigevent }}</td>
+                            </tr>
+                            <tr>
+                                <td>Memo</td>
+                                <td>{{ form.memo }}</td>
+                            </tr> {% endcomment %}
+                        </table>
+                        <Br>
+                        <button type="submit" class="btn btn-success medium">저장하기</button>
+                    </form>
+
+                    <script>
+                        var date = document.getElementById('{{ form.date.id_for_label }}')
+                        date.value = '{{ dateday }}';
+                    </script>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                  <h5 class="card-header card-title">{{ caldate.caldate }}</h5>
+                  <div class="card-body">
+                      <p class="card-text"></p>
+                      <ul>
+                          {% for schedule in daylist %}
+                              <li>{{ schedule.title }}
+                                <a class="btn btn-outline-warning mini" href="{% url 'schedule_update' pk=schedule.id  %}"> 수정 </a>
+                                {% comment %} <a class="btn btn-outline-warning mini" href="{% url 'schedule_delete' pk=schedule.id  %}"> 삭제 </a> {% endcomment %}
+                              </li>
+                          {% endfor %}
+                      </ul>
+
+                  </div>
+                </div>
+              </div>
+
+        </div>
+
+
+    </div>
+
+{% endblock  %}
+

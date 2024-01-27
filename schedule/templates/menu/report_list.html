@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">Report Manager</h2>
+
+        <table class="table" style="width: 100%;">
+        <tr>
+{% comment %}
+            <td style="background-color:#F5ECCE" width="100%">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <Br>
+                    <center><button type="submit" class="btn btn-warning btn-rounded">검색하기</button></center>
+                </form>
+            </td> {% endcomment %}
+
+            <td width="100%" align="right">
+                <select name="selperson">
+                    <option value=""> -----  전체  ----</option>
+
+                    {% for p in personlist %}
+                    <option value="{{ p.id }}"> {{ p.name }}</option>
+                    {% endfor %}
+                <br>
+                <button type="submit" class="btn btn-warning btn-rounded">검색하기</button>
+            </td>
+
+        </tr>
+        <tr>
+            <td width="70%">
+                <table class="table table-bordered table-hover" style="width: 99%;">
+                <thead class="table-warning" >
+                    <tr align="center"  class="align-middle">
+                        <th scope="col">Person</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Month</th>
+                        <th scope="col">Count</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Volunteer<br>hours</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in datalist %}
+                    <tr align="center"  class="align-middle">
+                        <td> {% if d.personid == 1 %}Sofia{%else%}Yujin{% endif %}</td>
+                        <td><p class="fw-lighter lh-1"><a href="{{ d.get_data_url }}">{{ d.title }}</a></p></td>
+                        <td> {{ d.dateday__year }}-{{ d.dateday__month }}</td>
+                        <td> {{ d.cnt }}</td>
+                        <td> ${{ d.sum_price }}</td>
+                        <td> {{ d.sum_volhours }}</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </td>
+
+
+        </tr>
+        </table>
+
+
+    </div>
+
+{% endblock  %}
+

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1>Schedule</h1>
+
+        {% for p in schedule_list %}
+        <hr/>
+        <h2><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h2>
+        <h4>{{ p.date }}</h4>
+        <p>{{ p.duration }}</p>
+        {% endfor %}
+    </div>
+
+{% endblock  %}

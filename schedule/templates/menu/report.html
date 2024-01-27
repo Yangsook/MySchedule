@@ -1,0 +1,85 @@
+<!-- report.html -->
+{% extends 'base.html' %}
+{% load custom_filters %}  <!-- custom_filters 태그 라이브러리를 로드합니다 -->
+
+{% block content %}
+<div id="content-main">
+    <h2 class="page-title">Report Manager</h2>
+
+
+    <form action="" method="POST" class="d-flex justify-content-end mb-3">
+        {% csrf_token %}
+        <div class="row g-2">
+            <div class="col-md">
+                <select name="selperson" class="form-select">
+                    <option value=""> ----- 전체 ----</option>
+                    {% for p in personlist %}
+                        <option value="{{ p.id }}">{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md">
+                <input type="date" name="start_date" class="form-control" id="start_date_input">
+            </div>
+            <div class="col-md">
+                <input type="date" name="end_date" class="form-control" id="end_date_input">
+            </div>
+            <div class="col-md-auto">
+                <button type="submit" class="btn btn-warning">검색</button>
+            </div>
+        </div>
+    </form>
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-warning">
+            <tr align="center">
+                <th scope="col">Person</th>
+                <th scope="col">Caterory</th>
+                <th scope="col">Title</th>
+                <th scope="col">Month</th>
+                <th scope="col">Count</th>
+                <th scope="col">Price</th>
+                <th scope="col">Volunteer Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for p in personlist %}
+            {% for d in datalist %}
+            {% if p.id == d.personid %}
+            <tr align="center">
+                <td>{{ d.personid__name }}</td>
+                <td>{{ d.eventid__category|get_category|default:"" }}</td>
+                <td><button type="button" class="btn btn-link" onclick="openReportMonthList({{ d.eventid }}, {{ d.dateday__year }}, {{ d.dateday__month }} )">{{ d.title }}</button></td>
+                <td>{{ d.dateday__year }}년 {{ d.dateday__month }}월</td>
+                <td>{{ d.cnt }}</td>
+                <td>${{ d.sum_price }}</td>
+                <td>{{ d.sum_volhours }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+            {% if not forloop.last %}
+            <tr><td colspan="7" height="50"></td></tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function openReportMonthList(eventid, year, month) {
+        // Calculate the center of the screen
+         w = 800;
+         h = 500;
+
+        const left = (screen.width - w) / 2;
+        const top = (screen.height - h) / 2;
+        // window.open 함수를 사용하여 새 창 열기
+        window.open(`/report/monthlist/${eventid}/${year}/${month}`, '_blank', `width=${w}, height=${h}, top=${top}, left=${left}, resizable=yes, scrollbars=yes`);
+    }
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load custom_filters %}  <!-- custom_filters 태그 라이브러리를 로드합니다 -->
+
+{% block content %}
+    <div id="content-main">
+        <h2 class="page-title">Event Manager</h2>
+
+        <table class="table" style="width: 100%;">
+        <tr>
+            <td width="80%">
+                <table class="table table-bordered table-hover" style="width: 100%;">
+                <thead class="table-warning" >
+                    <tr align="center"  class="align-middle">
+                        <th scope="col">ID</th>
+                        {% comment %} <th scope="col">Person</th> {% endcomment %}
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Day</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Memo</th>
+                        <th scope="col">Active</th>
+                        <th scope="col"><a class="btn btn-outline-warning mini" href="{% url 'event_add' %}"> new </a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in datalist %}
+                    <tr {% if not d.active %} class="falsecolor"  {% endif %}>
+                        <td> {{ d.id }}</td>
+                        {% comment %} <td> {{ d.personid__name }}</td> {% endcomment %}
+                        <td><p class="fw-lighter lh-1"><a href="{{ d.get_absolute_url }}">{{ d.title }}</a></p></td>
+                        <td> {{ d.category }}</td>
+                        <td> {{ d.day|get_dayofweek_kor|default:"" }}</td>
+                        <td> {{ d.time }}</td>
+                        <td> {{ d.duration }}</td>
+                        <td> {{ d.price }}</td>
+                        <td> {{ d.memo }}</td>
+                        <td> {{ d.active }}</td>
+                        <td>
+                            <a class="btn btn-outline-warning mini" href="{% url 'event_edit' pk=d.id  %}"> 수정 </a>
+                            {% if not d.get_schedule_cnt %}
+                            {% comment %} <a class="btn btn-outline-warning mini" onclick="alert('이미 생성된 스케줄 데이터가 있어서 삭제할 수 없습니다.')"> 삭제 </a>
+                            {% else %} {% endcomment %}
+                            <a class="btn btn-outline-warning mini" href="{% url 'event_delete' pk=d.id  %}" onclick="return confirm('정말로 삭제하시겠습니까?')"> 삭제 </a>
+                            {% endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </td>
+            <td>
+                <table class="table table-bordered" style="width: 100%;">
+                    <thead>
+                        <tr align="center">
+                            <th style="background-color:#F5DA81">입력 및 수정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color:#F5ECCE">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table>
+                                        {{ form.as_table }}
+                                    </table>
+
+                                    <center><button type="submit" class="btn btn-warning btn-rounded">저장하기</button></center>
+                                </form>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                    </table>
+            </td>
+        </tr>
+        </table>
+
+
+    </div>
+
+{% endblock  %}
+

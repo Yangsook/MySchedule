@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        <h1><a href="/schedule/">{{ schedule.title }}</a></h1>
+        <p>{{ schedule.date }}</p>
+        <p>{{ schedule.duration }}</p>
+        <p>{{ schedule.price }}</p>
+        <p>{{ schedule.volunteerhours }}</p>
+        <hr/>
+    </div>
+
+{% endblock  %}
+
